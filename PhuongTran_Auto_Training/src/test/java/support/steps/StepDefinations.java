@@ -10,7 +10,8 @@ public class StepDefinations {
 		String fileName = "Elements.xlsx";
 		String sheetName = "Login_Page";
 		support.openFileExcel(filePath, fileName, sheetName);
-		support.getValueCell(0, 0);
+		System.out.println(support.getValue_FromExcel(support.getIndex_FromTable(0, 0), support.getIndex_FromTable(0, 1)));
+		support.getValueCell();
 	}
 
 } 
