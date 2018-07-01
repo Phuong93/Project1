@@ -25,8 +25,7 @@ public class OperationHelper {
 	private XSSFCell cell;
 	private String sheetNameTest = "";
 	private WebDriver driver = null;
-	
-	//================PhuongTran=================
+	private final String referencePath = "/src/test/references/";
 		/**
 		 * This function is read excel xlsx file
 		 * AUTHOR: PHUONG TRAN
@@ -42,37 +41,40 @@ public class OperationHelper {
 		sheetNameTest = sheetName;
 		sheet = workbook.getSheet(sheetNameTest);
 	}
-	//================PhuongTran=================
-			/**
-			 * This function is read excel xlsx file
-			 * AUTHOR: PHUONG TRAN
-			 * SU3 - GROUP 2
-			 * MODIFIED: 
-			 * UPDATED DATE: 11/6/2018
-			 */
+		/**
+		 * This function is read excel xlsx file
+		 * AUTHOR: PHUONG TRAN
+		 * SU3 - GROUP 2
+		 * MODIFIED: 
+		 * UPDATED DATE: 11/6/2018
+		 */
 	public String getValue_FromExcel(int x, int y) {
 		row = sheet.getRow(x);
 		cell = row.getCell(y);
 		return cell.getStringCellValue().toString();
 	}
-	
+		/**
+		 * This function is getUrl from excel with dataTable
+		 * AUTHOR: PHUONG TRAN
+		 * SU3 - GROUP 2
+		 * MODIFIED: 
+		 * UPDATED DATE: 11/6/2018
+		 */
 	public String getUrl_fromTable(String[][] table) {
 		int row_table_default = 1;
 		int row_excel_index_eName = Integer.parseInt(table[row_table_default][0]);
 		int col_excel_index_eName = Integer.parseInt(table[row_table_default][1]);
-	  
 		String eName = getValue_FromExcel(row_excel_index_eName, col_excel_index_eName);
 		return eName;
 	}
-	//================PhuongTran=================
-	/**
-	 * This function is get elements
-	 * AUTHOR: PHUONG TRAN
-	 * SU3 - GROUP 2
-	 * MODIFIED: 
-	 * @param eName ; eLocator
-	 * UPDATED DATE: 21/6/2018
-	 */
+		/**
+		 * This function is get elements
+		 * AUTHOR: PHUONG TRAN
+		 * SU3 - GROUP 2
+		 * MODIFIED: 
+		 * @param eName ; eLocator
+		 * UPDATED DATE: 21/6/2018
+		 */
 	public WebElement getElements(String eName, String eLocator) {
 		WebElement e = null;
 		if (eName.toLowerCase().endsWith("-id")) {
@@ -90,19 +92,44 @@ public class OperationHelper {
 		}
 		return e;
 	}
-	//================PhuongTran=================
-	/**
-	 * This function is ....
-	 * AUTHOR: PHUONG TRAN
-	 * SU3 - GROUP 2
-	 * MODIFIED: 
-	 * UPDATED DATE: 11/6/2018
-	 */
+		/**
+		 * This function is launch a  browser
+		 * AUTHOR: PHUONG TRAN
+		 * SU3 - GROUP 2
+		 * MODIFIED: 
+		 * @param browser name
+		 * UPDATED DATE: 21/6/2018
+		 */
+	public void launch(String browserName) {
+		String rootpath = System.getProperty("user.dir");
+		switch (browserName.toLowerCase()) {
+		case "chrome":
+			System.setProperty("webdriver.chrome.driver", rootpath + referencePath + "chromedriver");
+			driver = new ChromeDriver();
+			break;
+		case "firefox" :
+			System.setProperty("webdriver.gecko.driver", rootpath + referencePath + "geckodriver.exe");
+			driver = new FirefoxDriver();
+			break;
+		case "ie" :
+			System.setProperty("webdriver.ie.driver", rootpath + referencePath + "IEDriverServer_win_x64.exe");
+			driver = new InternetExplorerDriver();
+		default:
+			System.out.println("Sorry, this browser is invalid");
+			break;
+		}
+	}
+		/**
+		 * This function is getElement with table from excel
+		 * AUTHOR: PHUONG TRAN
+		 * SU3 - GROUP 2
+		 * MODIFIED: 
+		 * UPDATED DATE: 11/6/2018
+		 */
 	public WebElement getElementTable(String[][] table){
 		  int row_table_default = 1;
 		  int row_excel_index_eName = Integer.parseInt(table[row_table_default][0]);
 		  int col_excel_index_eName = Integer.parseInt(table[row_table_default][1]);
-		  
 		  String eName = getValue_FromExcel(row_excel_index_eName, col_excel_index_eName);
 		  String eLocator = getValue_FromExcel(row_excel_index_eName + 1, col_excel_index_eName);
 		  System.out.println(eName + eLocator);
@@ -124,105 +151,59 @@ public class OperationHelper {
 		  element.clear();
 		  element.sendKeys(value);
 		 }
-	
-	//================PhuongTran=================
 		/**
-		 * This function is launch a  browser
+		 * This function is get infos from the flights site
 		 * AUTHOR: PHUONG TRAN
 		 * SU3 - GROUP 2
 		 * MODIFIED: 
-		 * @param browser name
+		 * @param eName ; eLocator ; value ; type
 		 * UPDATED DATE: 21/6/2018
 		 */
-	public void launch(String browserName) {
-		String rootpath = System.getProperty("user.dir");
-		String fireFoxPath = "/src/test/references/geckodriver";
-		String chromePath = "\\src\\test\\references\\chromedriver";
-		String iePath = "\\src\\test\\references\\IEDriverServer_win_x64";
-		String driverPropertyChrome = "webdriver.chrome.driver";
-		String driverPropertyFireFox = "webdriver.gecko.driver";
-		String driverPropertyIe = "webdriver.ie.driver";
-		if (browserName.equalsIgnoreCase("firefox")) {
-			System.setProperty(driverPropertyFireFox, rootpath + fireFoxPath);
-			driver = new FirefoxDriver();
-			driver.manage().window().maximize();
-		} else if (browserName.equalsIgnoreCase("chrome")) {
-			System.setProperty(driverPropertyChrome, rootpath + chromePath);
-			driver = new ChromeDriver();
-			driver.manage().window().maximize();
-		} else if (browserName.equalsIgnoreCase("ie")) {
-			System.setProperty(driverPropertyIe, rootpath + iePath);
-			driver = new InternetExplorerDriver();
-			driver.manage().window().maximize();
-		} else {
-			System.out.println("Sorry, this browser is invalid");
-		}
-	}
-	//================PhuongTran=================
-	/**
-	 * This function is select at dropdown list
-	 * AUTHOR: PHUONG TRAN
-	 * SU3 - GROUP 2
-	 * MODIFIED: 
-	 * @param eName ; eLocator ; value ; type
-	 * UPDATED DATE: 21/6/2018
-	 */
-	public void selectDropdownList(String eName, String eLocator, String value, String type) throws Throwable  {
-		driver.get("http://www.seleniumeasy.com/test/basic-select-dropdown-demo.html");
-		Thread.sleep(2000);		//Replace with wait
-		Select ddl = new Select(getElements(eName,eLocator ));
-		Thread.sleep(2000);
-		ddl.selectByValue(value);
-		Thread.sleep(2000);
-		driver.close();
-		
-	}
-
-//	 Viết function test cho Flights
-	public void getFlights() {
-//		 1. Open: https://www.expedia.com/
-		driver.get("https://www.expedia.com/");
-//		 2. Click on "Flights"
-		WebElement element = getElements("search-id","tab-flight-tab-hp");
-		element.click();
-//		 3. Click on Roundtrip/One way/ Multi-City
-		WebElement element1 = getElements("search-id","flight-type-roundtrip-label-hp-flight");
-		element1.click();
-//		 4. Flight from: nhập Ho Chi Minh City, rồi chọn suggestion Ho Chi Minh bên dưới
-		WebElement element2 = getElements("search-id","flight-origin-hp-flight");
-		element2.clear();
-		element2.sendKeys("Ho Chi Minh City");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		WebElement element3 = getElements("search-id","aria-option-0");
-		Actions actions = new Actions(driver);
-
-		actions.click(element3).perform();
-//		 5. Flight to: nhập Ha Noi, rồi chọn suggestion Ha Noi bên dưới
-		WebElement element4 = getElements("search-id","flight-destination-hp-flight");
-		element4.clear();
-		element4.sendKeys("Ha Noi");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		WebElement element5 = getElements("search-id","aria-option-0");
-		Actions actions2 = new Actions(driver);
-
-		actions2.click(element5).perform();
-//		 6. Check on "Add a hotel" or "Add a car"
-		WebElement element6 = getElements("search-id","flight-add-hotel-checkbox-hp-flight");
-		element6.click();
-//		 7. Click on Search
-		WebElement element7 = getElements("search-class","gcw-submit");
-		element7.click();
-		
-		driver.close();
-	}
+////	 Viết function test cho Flights
+//	public void getFlights() {
+////		 1. Open: https://www.expedia.com/
+//		driver.get("https://www.expedia.com/");
+////		 2. Click on "Flights"
+//		WebElement element = getElements("search-id","tab-flight-tab-hp");
+//		element.click();
+////		 3. Click on Roundtrip/One way/ Multi-City
+//		WebElement element1 = getElements("search-id","flight-type-roundtrip-label-hp-flight");
+//		element1.click();
+////		 4. Flight from: nhập Ho Chi Minh City, rồi chọn suggestion Ho Chi Minh bên dưới
+//		WebElement element2 = getElements("search-id","flight-origin-hp-flight");
+//		element2.clear();
+//		element2.sendKeys("Ho Chi Minh City");
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		WebElement element3 = getElements("search-id","aria-option-0");
+//		Actions actions = new Actions(driver);
+//
+//		actions.click(element3).perform();
+////		 5. Flight to: nhập Ha Noi, rồi chọn suggestion Ha Noi bên dưới
+//		WebElement element4 = getElements("search-id","flight-destination-hp-flight");
+//		element4.clear();
+//		element4.sendKeys("Ha Noi");
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		WebElement element5 = getElements("search-id","aria-option-0");
+//		Actions actions2 = new Actions(driver);
+//
+//		actions2.click(element5).perform();
+////		 6. Check on "Add a hotel" or "Add a car"
+//		WebElement element6 = getElements("search-id","flight-add-hotel-checkbox-hp-flight");
+//		element6.click();
+////		 7. Click on Search
+//		WebElement element7 = getElements("search-class","gcw-submit");
+//		element7.click();
+//		
+//		driver.close();
+//	}
 }
