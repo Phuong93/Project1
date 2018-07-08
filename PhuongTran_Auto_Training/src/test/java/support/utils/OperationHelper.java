@@ -2,6 +2,7 @@ package support.utils;
 
 import java.io.FileInputStream;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -15,7 +16,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class OperationHelper {
 	private FileInputStream file;
@@ -135,22 +138,6 @@ public class OperationHelper {
 		  System.out.println(eName + eLocator);
 		  return getElements(eName, eLocator);
 		 }
-	
-	public void openUrl(String[][] table){
-		  String url = getUrl_fromTable(table);
-		  driver.get(url);
-		 }
-	
-	public void click(String[][] table){
-		  WebElement element = getElementTable(table);
-		  element.click();
-		 }
-	
-	public void input(String[][] table, String value){
-		  WebElement element = getElementTable(table);
-		  element.clear();
-		  element.sendKeys(value);
-		 }
 		/**
 		 * This function is get infos from the flights site
 		 * AUTHOR: PHUONG TRAN
@@ -159,51 +146,30 @@ public class OperationHelper {
 		 * @param eName ; eLocator ; value ; type
 		 * UPDATED DATE: 21/6/2018
 		 */
-////	 Viết function test cho Flights
-//	public void getFlights() {
-////		 1. Open: https://www.expedia.com/
-//		driver.get("https://www.expedia.com/");
-////		 2. Click on "Flights"
-//		WebElement element = getElements("search-id","tab-flight-tab-hp");
-//		element.click();
-////		 3. Click on Roundtrip/One way/ Multi-City
-//		WebElement element1 = getElements("search-id","flight-type-roundtrip-label-hp-flight");
-//		element1.click();
-////		 4. Flight from: nhập Ho Chi Minh City, rồi chọn suggestion Ho Chi Minh bên dưới
-//		WebElement element2 = getElements("search-id","flight-origin-hp-flight");
-//		element2.clear();
-//		element2.sendKeys("Ho Chi Minh City");
-//		try {
-//			Thread.sleep(5000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		WebElement element3 = getElements("search-id","aria-option-0");
-//		Actions actions = new Actions(driver);
-//
-//		actions.click(element3).perform();
-////		 5. Flight to: nhập Ha Noi, rồi chọn suggestion Ha Noi bên dưới
-//		WebElement element4 = getElements("search-id","flight-destination-hp-flight");
-//		element4.clear();
-//		element4.sendKeys("Ha Noi");
-//		try {
-//			Thread.sleep(5000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		WebElement element5 = getElements("search-id","aria-option-0");
-//		Actions actions2 = new Actions(driver);
-//
-//		actions2.click(element5).perform();
-////		 6. Check on "Add a hotel" or "Add a car"
-//		WebElement element6 = getElements("search-id","flight-add-hotel-checkbox-hp-flight");
-//		element6.click();
-////		 7. Click on Search
-//		WebElement element7 = getElements("search-class","gcw-submit");
-//		element7.click();
-//		
-//		driver.close();
-//	}
+	public void openUrl(String[][] table){
+		  String url = getUrl_fromTable(table);
+		  driver.get(url);
+		 }
+	public void click(String[][] table) throws Throwable{
+		  WebElement element = getElementTable(table);
+		  element.click();
+		 }
+	public void input(String[][] table, String value){
+		  WebElement element = getElementTable(table);
+		  element.clear();
+		  element.sendKeys(value);
+		 }
+	public void selectAutoComplete(String[][] table, String value, String[][] table_auto) {
+		WebElement element = getElementTable(table);
+		element.clear();
+		element.sendKeys(value);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		WebElement element1 = getElementTable(table_auto);
+		element1.click();
+	}
 }
